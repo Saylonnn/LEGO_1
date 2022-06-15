@@ -20,10 +20,10 @@ class ControlSocket:
 
 
     def fw(self):
-        self.sock.sendall("goFW")
+        self.sock.sendall("FW")
 
     def bw(self):
-        self.sock.sendall("goBW")
+        self.sock.sendall("BW")
 
     def rotateAngel(self, angel):
         x = "rotate "+ angel
@@ -37,7 +37,9 @@ class ControlSocket:
         self.sock.close()
         self.STOP = True
         exit()
-
+    
+    def set_speed(self, x):
+        self.sock.sendall("set_speed ", x)
 
     def run(self):
         self.connectSocket()
