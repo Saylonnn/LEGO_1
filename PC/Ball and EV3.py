@@ -14,10 +14,8 @@ sift = cv2.SIFT_create()
 # find the keypoints and descriptors with SIFT
 kp1, des1 = sift.detectAndCompute(img1,None)
 
-
-# cap = cv2.VideoCapture(0)
-# cap = cv2.VideoCapture("ball.avi")
-cap = cv2.VideoCapture("rtsp://141.46.137.93:8554/mystream")
+cap = cv2.VideoCapture("ball.avi")
+#cap = cv2.VideoCapture("rtsp://141.46.137.93:8554/mystream")
 # ueye_streamer
 # Rtsp port 8554
 # 1024 x 768 15 fps
@@ -43,10 +41,8 @@ while(cap.isOpened()):
 
 
 #Koordinaten der Mitte des Balls
-    print(top_left_final2)
-#372,377
-#522,527
-#370,423
+    print("Ball: ", top_left_final2)
+
 
     kp2, des2 = sift.detectAndCompute(frame, None)
     # FLANN parameters
@@ -68,8 +64,10 @@ while(cap.isOpened()):
     dst_pt = [kp2[m.trainIdx].pt]
     dst_pt_final = dst_pt[0]
     dst_pt_final2 = dst_pt_final[0] + 100, dst_pt_final[1]
-    print(dst_pt)
-    print(dst_pt_final2)
+    dst_pt_int = round(dst_pt_final2[0]), round(dst_pt_final2[1])
+
+    #Koordinaten des Roboters
+    print("Roboter: ", dst_pt_int)
     draw_params = dict(matchColor=(0, 255, 0),
                        singlePointColor=(255, 0, 0),
                        matchesMask=matchesMask,
