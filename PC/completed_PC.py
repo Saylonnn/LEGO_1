@@ -21,16 +21,20 @@ class PC_Controller:
         #self.sock.hold()
         #self.sock.exit_All()
         #self.sock.set_speed(200)
-        keyboard.on_press_key("w", lambda _:s.sendall(b'FW'))
+        keyboard.on_press_key("w", lambda _:self.sock.fw())
         
-        keyboard.on_press_key("s", lambda _:s.sendall(b"BW"))
-        keyboard.on_press_key("s", lambda _:s.sendall(b"hold"))
-        keyboard.on_press_key("r", lambda _:s.sendall(b"angel 50"))
-        keyboard.on_press_key("q", lambda _:s.sendall(b"speed 100"))
-        keyboard.on_press_key("ü", lambda _:s.sendall(b"exit"))
-
+        keyboard.on_press_key("h", lambda _:self.sock.hold())
+        keyboard.on_press_key("s", lambda _:self.sock.bw())
+        keyboard.on_press_key("r", lambda _:self.sock.rotateAngel())
+        keyboard.on_press_key("q", lambda _:self.sock.setSpeed(100))
+        keyboard.on_press_key("ü", lambda _:self.sock.exit_All())
+        while True:
+            time.sleep(100)
 
 
 
     def run(self):
         self.frame_analysis()
+
+ctrl = PC_Controller()
+ctrl.run()

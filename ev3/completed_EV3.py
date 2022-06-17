@@ -63,7 +63,7 @@ class EV3_Controller:
                     self.exit()
                 
                 else:
-                    self.sock.sendall("[Execution Error] Data: ", data)
+                    self.sock.sendall(bytes("[Execution Error] Data: ", data))
     
     def fw(self):
         self.is_driving_fw = True
