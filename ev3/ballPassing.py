@@ -19,3 +19,11 @@ enginePass = Motor(Port.C, positive_direction=Direction.CLOCKWISE)
 
 # Code here
 
+class BallPassing:
+
+    def ball_pass(#ball_infront_robot):
+        #if ball_infront_robot == True:
+        enginePass.run(10000)
+        time.sleep(0.5)
+        enginePass.stop()
+
