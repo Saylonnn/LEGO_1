@@ -9,38 +9,31 @@ cap = cv2.VideoCapture("rtsp://141.46.137.93:8554/mystream")
 
 #initialize green ball
 green = cv2.imread('GreenBall.png')
-wGreen = green.shape[0]
-hGreen = green.shape[1]
 
 cv2.imshow("TemplateGreen", green)
 
 #initialize red ball
 red = cv2.imread('RedBall.png')
-wRed = red.shape[0]
-hRed = red.shape[1]
 
 cv2.imshow("TemplateRed", red)
 
 #initialize yellow ball
 yellow = cv2.imread('YellowBall.png')
-wYellow = yellow.shape[0]
-hYellow = yellow.shape[1]
 
 cv2.imshow("TemplateYellow", yellow)
 
 #initialize blue ball
 blue = cv2.imread('BlueBall.png')
-wBlue  = blue.shape[0]
-hBlue = blue.shape[1]
 
 cv2.imshow("TemplateBlue", blue)
 
 #initialize black ball
 black = cv2.imread('BlackBall.png')
-wBlack = black.shape[0]
-hBlack = black.shape[1]
+
 
 cv2.imshow("TemplateBlack", black)
+
+
 
 if (cap.isOpened()):
     print("Capturing ...")
@@ -126,8 +119,6 @@ while(cap.isOpened()):
 
     if cv2.waitKey(1) == 27:
         break # Wait for Esc
-
-
 
 cap.release()
 cv2.destroyAllWindows() # Close all windows
