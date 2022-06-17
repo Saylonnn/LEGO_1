@@ -8,14 +8,14 @@ cap = cv2.VideoCapture("rtsp://141.46.137.93:8554/mystream")
 # Bitrate 5000000
 
 #initialize green ball
-green = cv2.imread('ball2.jpg')
+green = cv2.imread('GreenBall.jpg')
 wGreen = green.shape[0]
 hGreen = green.shape[1]
 
 cv2.imshow("TemplateGreen", green)
 
 #initialize red ball
-red = cv2.imread('ball1.jpg')
+red = cv2.imread('redBall.jpg')
 wRed = red.shape[0]
 hRed = red.shape[1]
 
