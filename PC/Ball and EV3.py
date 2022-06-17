@@ -26,7 +26,21 @@ yellow = cv2.imread('YellowBall.png')
 wYellow = yellow.shape[0]
 hYellow = yellow.shape[1]
 
-cv2.imshow("TemplateBlack", yellow)
+cv2.imshow("TemplateYellow", yellow)
+
+#initialize blue ball
+blue = cv2.imread('BlueBall.png')
+wBlue  = blue.shape[0]
+hBlue = blue.shape[1]
+
+cv2.imshow("TemplateBlue", blue)
+
+#initialize black ball
+black = cv2.imread('BlackBall.png')
+wBlack = black.shape[0]
+hBlack = black.shape[1]
+
+cv2.imshow("TemplateBlack", black)
 
 if (cap.isOpened()):
     print("Capturing ...")
@@ -72,13 +86,41 @@ while(cap.isOpened()):
     yellow_min_val, yellow_max_val, yellow_min_loc, yellow_max_loc = cv2.minMaxLoc(resYellow)
 
     yellow_top_left = yellow_max_loc
-    yellow_bottom_right = (yellow_top_left[0] + 20, yellow_top_left[1] + 20)
-    yellow_top_left_final = (yellow_top_left[0] + 20, yellow_top_left[1] + 20)
+    yellow_bottom_right = (yellow_top_left[0] + 19, yellow_top_left[1] + 20)
+    yellow_top_left_final = (yellow_top_left[0] + 19, yellow_top_left[1] + 20)
 
     # Koordinaten der Mitte des Balls
     print("Yellow Ball: ", yellow_top_left_final)
 
     cv2.rectangle(frame, yellow_top_left_final, yellow_bottom_right, 255, 2)
+
+    # black ball tracking
+
+    resBlack = cv2.matchTemplate(frame, black, 5)
+    black_min_val, black_max_val, black_min_loc, black_max_loc = cv2.minMaxLoc(resBlack)
+
+    black_top_left = black_max_loc
+    black_bottom_right = (black_top_left[0] + 13, black_top_left[1] + 14)
+    black_top_left_final = (black_top_left[0] + 13, black_top_left[1] + 14)
+
+    # Koordinaten der Mitte des Balls
+    print("Black Ball: ", black_top_left_final)
+
+    cv2.rectangle(frame, black_top_left_final, black_bottom_right, 255, 2)
+
+    # blue ball tracking
+
+    resBlue = cv2.matchTemplate(frame, blue, 5)
+    blue_min_val, blue_max_val, blue_min_loc, blue_max_loc = cv2.minMaxLoc(resBlue)
+
+    blue_top_left = blue_max_loc
+    blue_bottom_right = (blue_top_left[0] + 13, blue_top_left[1] + 15)
+    blue_top_left_final = (blue_top_left[0] + 13, blue_top_left[1] + 15)
+
+    # Koordinaten der Mitte des Balls
+    print("Blue Ball: ", blue_top_left_final)
+
+    cv2.rectangle(frame, blue_top_left_final, blue_bottom_right, 255, 2)
 
     cv2.imshow("Video", frame)  # Anzeige des Videoframes
 
