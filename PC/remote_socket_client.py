@@ -4,21 +4,23 @@ import time
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
-    s.connect(('192.168.117.1', 8483))
+    s.connect(('192.168.117.1', 8484))
 except:
     print("no connection")
 
 connection = s.makefile('wb')
 
 keyboard.on_press_key("w", lambda _:s.sendall(b'FW'))
-keyboard.on_release(lambda e: s.sendall(b'FW'+ bytes(e.name, encoding='utf-8')))
-keyboard.on_press_key("a", lambda _:print("L"))
+
+keyboard.on_press_key("s", lambda _:s.sendall(b'BW'))
 #keyboard.on_release("wa", lambda _:print("stop L"))
-keyboard.on_press_key("s", lambda _:print("BW"))
-#keyboard.on_release("s", lambda _:print("stop BW"))
-keyboard.on_press_key("d", lambda _:print("R"))
+keyboard.on_press_key("h", lambda _:s.sendall(b'hold'))
+#keyboard.on_release("s", lambda _:print("stop BWah
+
+keyboard.on_press_key("a", lambda _:s.sendall(b'angel 50'))
 #keyboard.on_release("d", lambda _:print("stop R"))
-keyboard.on_press_key("ü", lambda _:print("STOP"))
+keyboard.on_press_key("q", lambda _:s.sendall(b'speed 50'))
+keyboard.on_press_key("e", lambda _:s.sendall(b'exit'))
 
 while True:
     time.sleep(100)

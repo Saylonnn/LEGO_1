@@ -13,10 +13,12 @@ import threading
 class EV3_Controller:
     def __init__(self):
         # EV3 Hardware connect
-        self.engine_left = Motor(Port.A, positive_direction=Direction.COUNTERCLOCKWISE)
-        self.engine_right = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
+        self.engine_left = Motor(Port.A, positive_direction=Direction.CLOCKWISE)
+        self.engine_right = Motor(Port.B, positive_direction=Direction.CLOCKWISE)
         #self.fS_left = ColorSensor(Port.S1)
-        self.gyro = Ev3devSensor(Port.S1)
+        #self.gyro = Ev3devSensor(Port.S1, mode="MODE_GYRO_ANG")
+        #self.gyro.calibrate()
+        #print(self.gyro.read())
         #self.fS_right = ColorSensor(Port.S1)
         #self.touch_right = TouchSensor(Port.S3)
         #self.ultrasonic = UltrasonicSensor(Port.S4)
@@ -43,6 +45,7 @@ class EV3_Controller:
             self.sock.listen([1])
             print("now listening on PORT 8484")
             conn, addr = self.sock.accept()
+            print("connected by: ", addr)
             while True:
                 data = conn.recv(1024)
                 print("incomming Message: ", data)
@@ -56,9 +59,9 @@ class EV3_Controller:
                 elif " " in data:
                     x = data.split(" ")
                     if x[0] == "angel":
-                        self.rotate(x[1])
+                        self.rotate(int(x[1]))
                     elif x[0] == "speed":
-                        self.set_speed(x[1])
+                        self.set_speed(int(x[1]))
                 elif data == "exit":
                     self.exit()
                 
@@ -85,7 +88,7 @@ class EV3_Controller:
         self.engine_left.hold()
     
     def rotate(self, x):
-        self.gyro.reset_angel(0)
+        self.gyro.reset(0)
         if x > 0:
             self.engine_right.run(self.engine_speed)
             self.engine_left.run(- self.engine_speed)
@@ -94,7 +97,7 @@ class EV3_Controller:
         if x < 0: 
             self.engine_right.run(- self.engine_speed)
             self.engine_left.run(self.engine_speed)
-            if self.gyro.angel() <= x:
+            if self.gyro.read() <= x:
                 self.hold()
 
     def set_speed(self, speed):

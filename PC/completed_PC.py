@@ -28,8 +28,9 @@ class PC_Controller:
         keyboard.on_press_key("r", lambda _:self.sock.rotateAngel())
         keyboard.on_press_key("q", lambda _:self.sock.setSpeed(100))
         keyboard.on_press_key("ü", lambda _:self.sock.exit_All())
+        keyboard.on_press_key("a", lambda _:print("L"))
         while True:
-            time.sleep(100)
+            time.sleep(1)
 
 
 
