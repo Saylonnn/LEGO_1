@@ -96,12 +96,12 @@ class EV3_Controller:
         if x > 0:
             self.engine_right.run(self.engine_speed)
             self.engine_left.run(- self.engine_speed)
-            if self.gyro.angel() == x:
+            if self.gyro.angel() >= x:
                 self.hold()
         if x < 0: 
             self.engine_right.run(- self.engine_speed)
             self.engine_left.run(self.engine_speed)
-            if self.gyro.angel() == x:
+            if self.gyro.angel() <= x:
                 self.hold()
 
     def set_speed(self, speed):

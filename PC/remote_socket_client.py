@@ -19,6 +19,6 @@ keyboard.on_press_key("s", lambda _:print("BW"))
 keyboard.on_press_key("d", lambda _:print("R"))
 #keyboard.on_release("d", lambda _:print("stop R"))
 keyboard.on_press_key("ü", lambda _:print("STOP"))
-w
+
 while True:
     time.sleep(100)
