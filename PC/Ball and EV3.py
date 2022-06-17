@@ -1,25 +1,32 @@
 import cv2
 
-template = cv2.imread('ball2.jpg')
-w = template.shape[0]
-h = template.shape[1]
-
-cv2.imshow("Template", template)
-
-img1 = cv2.imread('EV3Neu.png',cv2.IMREAD_GRAYSCALE)          # queryImage
-w_ev3 = img1.shape[0]
-
-# Initiate SIFT detector
-sift = cv2.SIFT_create()
-# find the keypoints and descriptors with SIFT
-kp1, des1 = sift.detectAndCompute(img1,None)
-
 #cap = cv2.VideoCapture("ball.avi")
 cap = cv2.VideoCapture("rtsp://141.46.137.93:8554/mystream")
 # ueye_streamer
 # Rtsp port 8554
 # 1024 x 768 15 fps
 # Bitrate 5000000
+
+#initialize green ball
+green = cv2.imread('ball2.jpg')
+wGreen = green.shape[0]
+hGreen = green.shape[1]
+
+cv2.imshow("TemplateGreen", green)
+
+#initialize red ball
+red = cv2.imread('ball1.jpg')
+wRed = red.shape[0]
+hRed = red.shape[1]
+
+cv2.imshow("TemplateRed", red)
+
+#initialize black ball
+black = cv2.imread('black ball.png')
+wBlack = black.shape[0]
+hBlack = black.shape[1]
+
+cv2.imshow("TemplateBlack", black)
 
 if (cap.isOpened()):
     print("Capturing ...")
@@ -30,57 +37,55 @@ while(cap.isOpened()):
     if not ret:
         print("Error retrieving video frame")
         break
+    #green ball tracking
+    resGreen = cv2.matchTemplate(frame, green, 5)
+    green_min_val, green_max_val, green_min_loc, green_max_loc = cv2.minMaxLoc(resGreen)
 
-    res = cv2.matchTemplate(frame, template, 5)
-    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-
-    top_left = max_loc
-    top_left_final = (top_left[0]+w_ev3, top_left[1])
-    bottom_right = (top_left_final[0] - 5, top_left_final[1] + 25)
-    top_left_final2 = (top_left[0] + w_ev3 - 5, top_left[1] + 25)
-
+    green_top_left = green_max_loc
+    green_bottom_right = (green_top_left[0] + 25 , green_top_left[1] + 25)
+    green_top_left_final = (green_top_left[0] + 25, green_top_left[1] + 25)
 
 #Koordinaten der Mitte des Balls
-    print("Ball: ", top_left_final2)
+    print("Green Ball: ", green_top_left_final)
+
+    cv2.rectangle(frame, green_top_left_final, green_bottom_right, 255, 2)
 
 
-    kp2, des2 = sift.detectAndCompute(frame, None)
-    # FLANN parameters
-    FLANN_INDEX_KDTREE = 1
-    index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
-    search_params = dict(checks=50)  # or pass empty dictionary
-    flann = cv2.FlannBasedMatcher(index_params, search_params)
-    matches = flann.knnMatch(des1, des2, k=2)
-    # Need to draw only good matches, so create a mask
-    matchesMask = [[0, 0] for i in range(len(matches))]
+    #red ball tracking
 
-    good = []
-    # ratio test as per Lowe's paper
-    for i, (m, n) in enumerate(matches):
+    resRed = cv2.matchTemplate(frame, red, 5)
+    red_min_val, red_max_val, red_min_loc, red_max_loc = cv2.minMaxLoc(resRed)
 
-        if m.distance < 0.7 * n.distance:
-            matchesMask[i] = [1, 0]
-            good.append(m)
-    dst_pt = [kp2[m.trainIdx].pt]
-    dst_pt_final = dst_pt[0]
-    dst_pt_final2 = dst_pt_final[0] + 100, dst_pt_final[1]
-    dst_pt_int = round(dst_pt_final2[0]), round(dst_pt_final2[1])
+    red_top_left = red_max_loc
+    red_bottom_right = (red_top_left[0] + 31, red_top_left[1] + 41)
+    red_top_left_final = (red_top_left[0] + 31, red_top_left[1] + 41)
 
-    #Koordinaten des Roboters
-    print("Roboter: ", dst_pt_int)
-    draw_params = dict(matchColor=(0, 255, 0),
-                       singlePointColor=(255, 0, 0),
-                       matchesMask=matchesMask,
-                       flags=cv2.DrawMatchesFlags_DEFAULT)
-    frame = cv2.drawMatchesKnn(img1, kp1, frame, kp2, matches, None, **draw_params)
+    # Koordinaten der Mitte des Balls
+    print("Red Ball: ", red_top_left_final)
 
-    cv2.rectangle(frame, top_left_final2, bottom_right, 255, 2)
+    cv2.rectangle(frame, red_top_left_final, red_bottom_right, 255, 2)
+
+
+    # black ball tracking
+
+    resBlack = cv2.matchTemplate(frame, black, 5)
+    black_min_val, black_max_val, black_min_loc, black_max_loc = cv2.minMaxLoc(resBlack)
+
+    black_top_left = black_max_loc
+    black_bottom_right = (black_top_left[0] + 15, black_top_left[1] + 15)
+    black_top_left_final = (black_top_left[0] + 15, black_top_left[1] + 15)
+
+    # Koordinaten der Mitte des Balls
+    print("Black Ball: ", black_top_left_final)
+
+    cv2.rectangle(frame, black_top_left_final, black_bottom_right, 255, 2)
 
     cv2.imshow("Video", frame)  # Anzeige des Videoframes
 
-
     if cv2.waitKey(1) == 27:
         break # Wait for Esc
+
+
 
 cap.release()
 cv2.destroyAllWindows() # Close all windows
