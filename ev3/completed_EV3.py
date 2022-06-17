@@ -9,16 +9,16 @@ import socket
 import threading
 
 
-class EV3_Controller
+class EV3_Controller:
     def __init__(self):
         # EV3 Hardware connect
         self.engine_left = Motor(Port.A, positive_direction=Direction.COUNTERCLOCKWISE)
         self.engine_right = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
         #self.fS_left = ColorSensor(Port.S1)
-        self.gyro = GyroSensor(Port.S1, positive_direction=Direction.CLOCKWISE)
+        self.gyro = GyroSensor(Port.S1)
         self.fS_right = ColorSensor(Port.S2)
-        self.touch_left = TouchSensor(Port.S3)
-        self.ultrasonic = UltrasonicSensor(Port.S4)
+        self.touch_right = TouchSensor(Port.S3)
+        #self.ultrasonic = UltrasonicSensor(Port.S4)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.engine_speed = 200
         self.is_driving_fw = False
@@ -114,3 +114,8 @@ class EV3_Controller
     def exit(self):
         self.server_thread.stop()
         exit()
+
+
+
+ev3_control = EV3_Controller()
+ev3_control.run()

@@ -8,7 +8,7 @@
 			"name": "Download and Run",
 			"type": "ev3devBrowser",
 			"request": "launch",
-			"program": "/home/robot/${workspaceRootFolderName}/completed_EV3.py",
+			"program": "/home/robot/${workspaceRootFolderName}/ev3/completed_EV3.py",
 			"interactiveTerminal": false
 		}
 	]
