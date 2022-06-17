@@ -6,7 +6,7 @@ h = template.shape[1]
 
 cv2.imshow("Template", template)
 
-img1 = cv2.imread('ev3karol.png',cv2.IMREAD_GRAYSCALE)          # queryImage
+img1 = cv2.imread('EV3Neu.png',cv2.IMREAD_GRAYSCALE)          # queryImage
 w_ev3 = img1.shape[0]
 
 # Initiate SIFT detector
@@ -14,8 +14,8 @@ sift = cv2.SIFT_create()
 # find the keypoints and descriptors with SIFT
 kp1, des1 = sift.detectAndCompute(img1,None)
 
-cap = cv2.VideoCapture("ball.avi")
-#cap = cv2.VideoCapture("rtsp://141.46.137.93:8554/mystream")
+#cap = cv2.VideoCapture("ball.avi")
+cap = cv2.VideoCapture("rtsp://141.46.137.93:8554/mystream")
 # ueye_streamer
 # Rtsp port 8554
 # 1024 x 768 15 fps
@@ -36,8 +36,8 @@ while(cap.isOpened()):
 
     top_left = max_loc
     top_left_final = (top_left[0]+w_ev3, top_left[1])
-    bottom_right = (top_left_final[0] -20, top_left_final[1] + 25)
-    top_left_final2 = (top_left[0] + w_ev3 - 20, top_left[1] + 25)
+    bottom_right = (top_left_final[0] - 5, top_left_final[1] + 25)
+    top_left_final2 = (top_left[0] + w_ev3 - 5, top_left[1] + 25)
 
 
 #Koordinaten der Mitte des Balls
