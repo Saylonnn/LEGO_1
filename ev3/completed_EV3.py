@@ -4,6 +4,7 @@ from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor
                                 UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
+from pybricks.iodevices import Ev3devSensor
 from threading import Thread
 import socket
 import threading
@@ -15,9 +16,9 @@ class EV3_Controller:
         self.engine_left = Motor(Port.A, positive_direction=Direction.COUNTERCLOCKWISE)
         self.engine_right = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
         #self.fS_left = ColorSensor(Port.S1)
-        self.gyro = GyroSensor(Port.S1)
-        self.fS_right = ColorSensor(Port.S2)
-        self.touch_right = TouchSensor(Port.S3)
+        self.gyro = Ev3devSensor(Port.S1)
+        #self.fS_right = ColorSensor(Port.S1)
+        #self.touch_right = TouchSensor(Port.S3)
         #self.ultrasonic = UltrasonicSensor(Port.S4)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.engine_speed = 200
@@ -29,19 +30,11 @@ class EV3_Controller:
 
         # Create Socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        addr = socket.getaddrinfo('0.0.0.0', 80)[0][-1]
-        self.sock.bind((addr, 8484))
+        
+        self.sock.bind(("", 8484))
 
     # starts all Methods threaded
-    def run(self):
-        server_thread = threading.Thread(target=server_control)
-
-        server_thread.start()
-
-        # endless Loop so the programm does not exit
-        while self.STOP == False:
-            wait(1000)
-
+    
     #starts server
     def server_control(self):
         
@@ -114,6 +107,17 @@ class EV3_Controller:
     def exit(self):
         self.server_thread.stop()
         exit()
+
+
+    def run(self):
+        server_thread = threading.Thread(target=self.server_control)
+
+        server_thread.start()
+
+        # endless Loop so the programm does not exit
+        while self.STOP == False:
+            wait(1000)
+
 
 
 
