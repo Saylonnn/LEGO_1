@@ -17,12 +17,13 @@ ev3 = EV3Brick()
 
 ENGINE_LEFT = Motor(Port.A, positive_direction=Direction.CLOCKWISE)
 ENGINE_RIGHT = Motor(Port.B, positive_direction=Direction.CLOCKWISE)
-ENGINE_PASS_L = Motor(Port.C, positive_direction=Direction.CLOCKWISE)
-ENGINE_PASS_R = Motor(Port.D, positive_direction=Direction.CLOCKWISE)
+ENGINE_PASS_L = Motor(Port.C, positive_direction=Direction.CLOCKWISE)   # Left engine for cathcing and shooting the ball
+ENGINE_PASS_R = Motor(Port.D, positive_direction=Direction.CLOCKWISE)   # Right engine for catching and shooting the ball
 
 # Code here
 class BallPassing:
 
+    # Shooting engines move swiftly opening the cage and pushing the ball out
     def shoot():
         ENGINE_PASS_L.run(1000)
         ENGINE_PASS_R.run(1000)
@@ -30,6 +31,7 @@ class BallPassing:
         ENGINE_PASS_L.stop()
         ENGINE_PASS_R.stop()
 
+    # Robot moves forward and closes the cage
     def close_cage():
         ENGINE_LEFT.run(500)
         ENGINE_RIGHT.run(500)
@@ -42,6 +44,6 @@ class BallPassing:
         ENGINE_PASS_R.stop()
 
 
-bp = BallPassing
+#bp = BallPassing
 #bp.close_cage()
-bp.shoot()
+#bp.shoot()
