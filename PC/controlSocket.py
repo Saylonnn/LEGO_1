@@ -13,21 +13,22 @@ class ControlSocket:
         try:
             self.sock.connect((self.ev3_ip, 8484))
             print("connected")
+            data = conn.recv(1024)
+            print(data)
         except:
             print("connection failed")
             print("retry in 5s")
-            time.sleep(5000)
+            time.sleep(500)
             self.connectSocket()
 
 
     def fw(self):
-        
         self.sock.sendall(b"FW")
 
     def bw(self):
         self.sock.sendall(b"BW")
 
-    def rotateAngel(self, angle):
+    def rotateAngle(self, angle):
         x = "angle "+ str(angle)
         self.sock.sendall(bytes(x, 'utf-8'))
 

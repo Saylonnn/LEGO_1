@@ -4,7 +4,6 @@ from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor
                                 UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.iodevices import Ev3devSensor
 from threading import Thread
 import socket
 import threading
@@ -16,14 +15,9 @@ class EV3_Controller:
         # EV3 Hardware connect
         self.engine_left = Motor(Port.A, positive_direction=Direction.CLOCKWISE)
         self.engine_right = Motor(Port.B, positive_direction=Direction.CLOCKWISE)
-        #self.fS_left = ColorSensor(Port.S1)
-        self.gyro = Ev3devSensor(Port.S1)
-        #self.gyro.mode("GYRO")
-        #self.gyro.calibrate()
-        print(self.gyro.read("ANALOG-0"))
-        #self.fS_right = ColorSensor(Port.S1)
-        #self.touch_right = TouchSensor(Port.S3)
-        #self.ultrasonic = UltrasonicSensor(Port.S4)
+        self.gyro = GyroSensor(Port.S1)#, positive_direction=Direction.CLOCKWISE)
+        
+    
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.engine_speed = 200
         self.is_driving_fw = False
@@ -67,10 +61,12 @@ class EV3_Controller:
                     elif x[0] == "speed":
                         self.set_speed(int(x[1]))
                 elif data == "exit":
-                    self.exit()
+                    exit_thread = threading.Thread(target=exit)
+                    exit_thread.start()
+                    
                 
                 else:
-                    self.sock.sendall(bytes("[Execution Error] Data: ", data))
+                    self.sock.sendall(bytes(("[Execution Error] Data: ", data), "utf-8"))
     
     def fw(self):
         self.is_driving_fw = True
@@ -93,26 +89,21 @@ class EV3_Controller:
     
     def rotate(self, x):
         
-        #self.gyro.reset(0)
-        current_angle = self.gyro.read("ANALOG-0")[0]
-        print("current_angle: ", current_angle)
-        new_angle = int(current_angle) + int(x)
-        print("new_angle: ", new_angle)
-        if new_angle > current_angle:
-            
+        self.gyro.reset_angle(0)
+        
+        if x > 0:
             self.engine_right.run(-self.engine_speed)
             self.engine_left.run( self.engine_speed)
-            while self.gyro.read("ANALOG-0")[0] <= new_angle:
-                print(self.gyro.read("ANALOG-0")[0])
+            while self.gyro.angle() <= x:
+                print(self.gyro.angle())
             self.hold()
             print("angel finished")
                     
-                
-        if new_angle < current_angle: 
-            self.engine_right.run( self.engine_speed)
-            self.engine_left.run(- self.engine_speed)
-            while self.gyro.read("ANALOG-0")[0] >= new_angle:
-                print(self.gyro.read("ANALOG-0")[0])
+        if x < 0:
+            self.engine_right.run(self.engine_speed)
+            self.engine_left.run(-self.engine_speed)
+            while self.gyro.angle() >= x:
+                print(self.gyro.angle())
             self.hold()
             print("angel finished")
                     

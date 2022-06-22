@@ -10,19 +10,14 @@ class PC_Controller:
         
     def frame_analysis(self):
         print("frame_analyse")
-        #self.sock.fw()
-        #self.sock.bw()
-        #self.sock.rotateAngel(1)a
-        #self.sock.hold()
-        #self.sock.exit_All()
-        #self.sock.set_speed(200)
+        
         
         keyboard.on_press_key("w", lambda _:self.sock.fw())
         
         keyboard.on_press_key("h", lambda _:self.sock.hold())
         keyboard.on_press_key("s", lambda _:self.sock.bw())
-        keyboard.on_press_key("r", lambda _:self.sock.rotateAngel())
-        keyboard.on_press_key("q", lambda _:self.sock.set_speed(100))
+        keyboard.on_press_key("r", lambda _:self.sock.rotateAngle(90))
+        keyboard.on_press_key("q", lambda _:self.sock.set_speed(1000))
         keyboard.on_press_key("ü", lambda _:self.sock.exit_All())
         keyboard.on_press_key("a", lambda _:print("L"))
         while True:
