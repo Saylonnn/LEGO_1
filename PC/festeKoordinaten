@@ -10,3 +10,9 @@ Ecke links oben:    66, 118
 Ecke links unten:   74, 627
 Ecke rechts oben:   893, 120
 Ecke rechts unten:  893, 618
+
+Spielfeld als gerades Rechteck (ohne Wölbung der Kamera einzuberechnen):
+Ecke links oben: 56, 105
+Ecke links unten: 56, 638
+Ecke rechts oben: 908, 105
+Ecke rechts unten: 908, 638
