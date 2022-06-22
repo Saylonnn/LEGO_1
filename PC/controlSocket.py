@@ -21,14 +21,15 @@ class ControlSocket:
 
 
     def fw(self):
+        
         self.sock.sendall(b"FW")
 
     def bw(self):
         self.sock.sendall(b"BW")
 
-    def rotateAngel(self, angel):
-        x = "rotate "+ angel
-        self.sock.sendall(bytes("angel", x))
+    def rotateAngel(self, angle):
+        x = "angle "+ str(angle)
+        self.sock.sendall(bytes(x, 'utf-8'))
 
     def hold(self):
         self.sock.sendall(b"hold")

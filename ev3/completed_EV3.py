@@ -8,6 +8,7 @@ from pybricks.iodevices import Ev3devSensor
 from threading import Thread
 import socket
 import threading
+import sys
 
 
 class EV3_Controller:
@@ -16,9 +17,10 @@ class EV3_Controller:
         self.engine_left = Motor(Port.A, positive_direction=Direction.CLOCKWISE)
         self.engine_right = Motor(Port.B, positive_direction=Direction.CLOCKWISE)
         #self.fS_left = ColorSensor(Port.S1)
-        #self.gyro = Ev3devSensor(Port.S1, mode="MODE_GYRO_ANG")
+        self.gyro = Ev3devSensor(Port.S1)
+        #self.gyro.mode("GYRO")
         #self.gyro.calibrate()
-        #print(self.gyro.read())
+        print(self.gyro.read("ANALOG-0"))
         #self.fS_right = ColorSensor(Port.S1)
         #self.touch_right = TouchSensor(Port.S3)
         #self.ultrasonic = UltrasonicSensor(Port.S4)
@@ -29,6 +31,7 @@ class EV3_Controller:
 
         # Handle Threading
         self.STOP = False
+        self.server_thread = threading.Thread(target=self.server_control)
 
         # Create Socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -50,6 +53,7 @@ class EV3_Controller:
                 data = conn.recv(1024)
                 print("incomming Message: ", data)
                 data = data.decode("utf-8")
+                print(data)
                 if data == "FW":
                     self.fw()
                 elif data == "BW":
@@ -58,7 +62,7 @@ class EV3_Controller:
                     self.hold()
                 elif " " in data:
                     x = data.split(" ")
-                    if x[0] == "angel":
+                    if x[0] == "angle":
                         self.rotate(int(x[1]))
                     elif x[0] == "speed":
                         self.set_speed(int(x[1]))
@@ -88,17 +92,31 @@ class EV3_Controller:
         self.engine_left.hold()
     
     def rotate(self, x):
-        self.gyro.reset(0)
-        if x > 0:
-            self.engine_right.run(self.engine_speed)
+        
+        #self.gyro.reset(0)
+        current_angle = self.gyro.read("ANALOG-0")[0]
+        print("current_angle: ", current_angle)
+        new_angle = int(current_angle) + int(x)
+        print("new_angle: ", new_angle)
+        if new_angle > current_angle:
+            
+            self.engine_right.run(-self.engine_speed)
+            self.engine_left.run( self.engine_speed)
+            while self.gyro.read("ANALOG-0")[0] <= new_angle:
+                print(self.gyro.read("ANALOG-0")[0])
+            self.hold()
+            print("angel finished")
+                    
+                
+        if new_angle < current_angle: 
+            self.engine_right.run( self.engine_speed)
             self.engine_left.run(- self.engine_speed)
-            if self.gyro.angel() >= x:
-                self.hold()
-        if x < 0: 
-            self.engine_right.run(- self.engine_speed)
-            self.engine_left.run(self.engine_speed)
-            if self.gyro.read() <= x:
-                self.hold()
+            while self.gyro.read("ANALOG-0")[0] >= new_angle:
+                print(self.gyro.read("ANALOG-0")[0])
+            self.hold()
+            print("angel finished")
+                    
+                
 
     def set_speed(self, speed):
         self.engine_speed = speed
@@ -108,14 +126,14 @@ class EV3_Controller:
             self.fw()
 
     def exit(self):
-        self.server_thread.stop()
-        exit()
+        #self.server_thread.exit()
+        sys.exit()
 
 
     def run(self):
-        server_thread = threading.Thread(target=self.server_control)
+        
 
-        server_thread.start()
+        self.server_thread.start()
 
         # endless Loop so the programm does not exit
         while self.STOP == False:
@@ -126,3 +144,39 @@ class EV3_Controller:
 
 ev3_control = EV3_Controller()
 ev3_control.run()
+
+
+
+'''
+
+class MySensor(Ev3devSensor):
+    """Example of extending the Ev3devSensor class."""
+    def __init__(self, port):
+        """Initialize the sensor."""
+        # Initialize the parent class.
+        super().__init__(port)
+        # Get the sysfs path.
+        self.path = '/sys/class/lego-sensor/sensor' + str(self.sensor_index)
+    def get_modes(self):
+        """Get a list of mode strings so we don't have to look them up."""
+        # The path of the modes file.
+        modes_path = self.path + '/modes'
+        # Open the modes file.
+        with open(modes_path, 'r') as m:
+
+            # Read the contents.
+            contents = m.read()
+            # Strip the newline symbol, and split at every space symbol.
+            return contents.strip().split(' ')
+# Initialize the sensor
+sensor = MySensor(Port.S1)
+# Show where this sensor can be found
+print(sensor.path)
+# Print the available modes
+modes = sensor.get_modes()
+print(modes)
+# Read mode 0 of this sensor
+while True:
+    gyroValueRaw = open(sensor._path + "/value0", "rb")
+    print(gyroValueRaw)
+'''
