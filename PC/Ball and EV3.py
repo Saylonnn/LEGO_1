@@ -10,29 +10,17 @@ cap = cv2.VideoCapture("rtsp://141.46.137.93:8554/mystream")
 #initialize green ball
 green = cv2.imread('GreenBall.png')
 
-cv2.imshow("TemplateGreen", green)
-
 #initialize red ball
 red = cv2.imread('RedBall.png')
-
-cv2.imshow("TemplateRed", red)
 
 #initialize yellow ball
 yellow = cv2.imread('YellowBall.png')
 
-cv2.imshow("TemplateYellow", yellow)
-
 #initialize blue ball
 blue = cv2.imread('BlueBall.png')
 
-cv2.imshow("TemplateBlue", blue)
-
 #initialize black ball
 black = cv2.imread('BlackBall.png')
-
-
-cv2.imshow("TemplateBlack", black)
-
 
 
 if (cap.isOpened()):
@@ -69,6 +57,15 @@ while(cap.isOpened()):
 
     # Koordinaten der Mitte des Balls
     print("Red Ball: ", red_top_left_final)
+
+    #TODO: wenn Ball im Feld, dann hinfahren
+    #TODO: wenn Ball außerhalb vom Feld, dann zum Tor fahren und schießen
+    #TODO: dafür alle Ecken ausmessen und roten Ball außerhalb vom Feld legen
+
+    if red_top_left_final[0] > 56 & red_top_left_final[0] < 908 & red_top_left_final[1] > 105 & red_top_left_final[1] < 638:
+        print("red ball inside")
+    else:
+        print("red ball outside")
 
     cv2.rectangle(frame, red_top_left_final, red_bottom_right, 255, 2)
 
@@ -114,6 +111,8 @@ while(cap.isOpened()):
     print("Blue Ball: ", blue_top_left_final)
 
     cv2.rectangle(frame, blue_top_left_final, blue_bottom_right, 255, 2)
+    cv2.rectangle(frame, (56, 105), (908, 638), 255,2)
+
 
     cv2.imshow("Video", frame)  # Anzeige des Videoframes
 
