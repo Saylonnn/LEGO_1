@@ -17,7 +17,7 @@ class EV3_Controller:
         self.engine_right = Motor(Port.D, positive_direction=Direction.CLOCKWISE)
         self.engine_shoot_left = Motor(Port.B, positive_direction=Direction.CLOCKWISE)
         self.engine_shoot_right = Motor(Port.C, positive_direction=Direction.CLOCKWISE)
-        self.gyro = GyroSensor(Port.S1)#, positive_direction=Direction.CLOCKWISE)
+        self.gyro = GyroSensor(Port.S2)#, positive_direction=Direction.CLOCKWISE)
         
     
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
