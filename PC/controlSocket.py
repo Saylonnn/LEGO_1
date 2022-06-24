@@ -2,16 +2,16 @@ import socket
 import time
 
 class ControlSocket:
-    def __init__(self, ev3_ip):
+    def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ev3_ip = ev3_ip
+        #self.ev3_ip = ev3_ip
         self.STOP = False
         self.connection = self.sock.makefile('wb') 
 
     #connect to EV3 or wait and retries
     def connectSocket(self):
         try:
-            self.sock.connect((self.ev3_ip, 8484))
+            self.sock.connect(('192.168.117.1', 8484))
             print("connected")
             data = conn.recv(1024)
             print(data)
@@ -46,6 +46,9 @@ class ControlSocket:
     
     def shoot(self):
         print("shoot")
+    
+    def grab(self):
+        print("grab")
 
     def run(self):
         try:
