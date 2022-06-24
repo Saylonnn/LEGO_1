@@ -43,8 +43,13 @@ class ControlSocket:
     
     def set_speed(self, x):
         self.sock.sendall(bytes("set_speed ", x))
+    
+    def shoot(self):
+        print("shoot")
 
     def run(self):
-        self.connectSocket()
-        while self.STOP == False:
-            time.sleep(100)
+        try:
+            self.connectSocket()
+        except:
+            raise IOError("Could not connect to IP")
+        
