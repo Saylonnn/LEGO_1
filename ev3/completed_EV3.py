@@ -14,7 +14,9 @@ class EV3_Controller:
     def __init__(self):
         # EV3 Hardware connect
         self.engine_left = Motor(Port.A, positive_direction=Direction.CLOCKWISE)
-        self.engine_right = Motor(Port.B, positive_direction=Direction.CLOCKWISE)
+        self.engine_right = Motor(Port.D, positive_direction=Direction.CLOCKWISE)
+        self.engine_shoot_left = Motor(Port.B, positive_direction=Direction.CLOCKWISE)
+        self.engine_shoot_right = Motor(Port.C, positive_direction=Direction.CLOCKWISE)
         self.gyro = GyroSensor(Port.S1)#, positive_direction=Direction.CLOCKWISE)
         
     
@@ -54,6 +56,10 @@ class EV3_Controller:
                     self.bw()
                 elif data == "hold":
                     self.hold()
+                elif data == "shoot":
+                    self.shoot()
+                elif data == "catch":
+                    self.catch()
                 elif " " in data:
                     x = data.split(" ")
                     if x[0] == "angle":
@@ -119,6 +125,24 @@ class EV3_Controller:
     def exit(self):
         #self.server_thread.exit()
         sys.exit()
+
+    def shoot(self):
+        self.engine_shoot_left.run(1000)
+        self.engine_shoot_right.run(1000)
+        time.sleep(0.2)
+        self.engine_shoot_left.stop()
+        self.engine_shoot_right.stop()
+
+    def catch(self):
+        self.engine_shoot_left.run(500)
+        self.engine_shoot_right.run(500)
+        self.enigne_left.run(-100)
+        self.engine_right.run(-100)
+        time.sleep(0.9)
+        self.engine_shoot_left.stop()
+        self.engine_shoot_right.stop()
+        self.engine_left.stop()
+        self.engine_right.stop()
 
 
     def run(self):
