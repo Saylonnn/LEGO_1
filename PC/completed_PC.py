@@ -17,6 +17,7 @@ class PC_Controller:
         self.GAME_RUNNING = False
         self.GOAL_1_COR = None
         self.GOAL_2_COR = None
+        self.RUNNING = True
     
     
        
@@ -28,6 +29,7 @@ class PC_Controller:
             time.sleep(100)
         
         while GAME_RUNNING == True:
+            print("lets start")
 
             degree = self.calculate_Angle(self.EvFrontCor, self.EvBackCor, self.BallCor)
             self.sock.rotateAngle(degree)
@@ -70,12 +72,7 @@ class PC_Controller:
             self.sock.rotateAngle(degree)
 
 
-    def updateCor(self):
-        if self.EV3_DEV == 1:
-            self.EvFrontCor = Device_Corr[2]
-            self.EvBackCor = Device_Corr[1]
-            self.BallCor = Device_Corr[0]
-
+ 
 
     def messureDistance(self, ev3Front, ballCor):
         distance = math.sqrt((ev3Front[0] - ballCor[0])**2 + (ev3Front[1] - ballCor[1])**2)
@@ -123,13 +120,14 @@ class PC_Controller:
         self.sock = ControlSocket()
         self.sock.run()
     
-    def connectPosManager(self, ip):
-        self.client_socket = socket.socket(socket.AF_INIET, socket.SOCK_STREAM)
-        client_socket.connect(ip)
-        connection = client_socket.makefile('wb')
+    def connectPosManager(self):
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client_socket.connect(('192.168.117.230', 8485))
+        connection = self.client_socket.makefile('wb')
         while True:
             data = self.client_socket.recv(1024)
             data = data.decode('utf-8')
+            print('data')
             #Ball, EV3_1.Vorne, EV3_1.Hinten, EV3_2.Vorne, EV3_2.Hinten, Tor1_rechts, Tor1_links, Tor2_rechts, Tor2_links
 
             self.BallCor = data[0]
@@ -157,18 +155,22 @@ class PC_Controller:
             ################################################################
             #           def Threads 
             ################################################################
-            ev3_conn = threading.Thread(target=self.run_socket)
+            #ev3_conn = threading.Thread(target=self.run_socket)
             driveController = threading.Thread(target=self.driveControl)
+            ip = "192.168.117.230"
+            update_cord = threading.Thread(target=self.connectPosManager)
 
             ################################################################
             #           start Threads 
             ################################################################
-            ev3_conn.start()
-            
+            #ev3_conn.start()
+            update_cord.start()
             while self.IS_CONNECTED == False:
                 time.sleep(100)
             driveController.start()
             
+            while self.RUNNING == True:
+                time.sleep(100)
 
 
 ctrl = PC_Controller()

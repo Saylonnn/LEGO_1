@@ -6,20 +6,14 @@ class ControlSocket:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #self.ev3_ip = ev3_ip
         self.STOP = False
-        self.connection = self.sock.makefile('wb') 
+         
 
     #connect to EV3 or wait and retries
     def connectSocket(self):
-        try:
-            self.sock.connect(('192.168.117.1', 8484))
-            print("connected")
-            data = conn.recv(1024)
-            print(data)
-        except:
-            print("connection failed")
-            print("retry in 5s")
-            time.sleep(500)
-            self.connectSocket()
+        self.sock.connect(('192.168.117.1', 8484))
+        self.connection = self.sock.makefile('wb')
+        
+        
 
 
     def fw(self):
@@ -45,14 +39,14 @@ class ControlSocket:
         self.sock.sendall(bytes("set_speed ", x))
     
     def shoot(self):
-        print("shoot")
+        self.sock.sendall(b"shoot")
     
     def grab(self):
-        print("grab")
+        self.sock.sendall(b"catch")
 
     def run(self):
         try:
             self.connectSocket()
-        except:
+        except ConnectionRefusedError:
             raise IOError("Could not connect to IP")
         
