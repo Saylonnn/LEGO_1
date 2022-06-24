@@ -314,13 +314,18 @@ class ThreadingServer():
             cv2.rectangle(frame, blue_top_left_final, blue_bottom_right, 255, 2)
             cv2.rectangle(frame, (56, 105), (908, 638), 255,2)
 
+            cords = [red_top_left_final, black_top_left_final, blue_top_left_final, yellow_top_left_final, green_top_left_final, [57,286], [57, 461], [947, 283], [947, 458], True]
+            
+            
+            for x in self.connections:
+                try:
+                    x.send(b'cords')
+                except:
+                    print("connection closed")
+                    self.connections.remove(x)
+            #cv2.imshow("Video", frame)  # Anzeige des Videoframes
 
-            cv2.imshow("Video", frame)  # Anzeige des Videoframes
-
-            if cv2.waitKey(1) == 27:
-                break # Wait for Esc
-        
-
+            
         ueye.is_FreeImageMem(hCam, pcImageMemory, MemID)
         ueye.is_ExitCamera(hCam)
         #cap.release()
