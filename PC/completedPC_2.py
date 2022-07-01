@@ -7,6 +7,7 @@ import threading
 import numpy as np
 import math
 import pickle
+import manim
 
 class PC_Controller:
     def __init__(self):
@@ -154,7 +155,8 @@ class PC_Controller:
             
        
         
-
+    def visualization(self):
+        pass
         
 
 
@@ -165,12 +167,14 @@ class PC_Controller:
             #ev3_conn = threading.Thread(target=self.run_socket)
             driveController = threading.Thread(target=self.driveControl)
             update_cord = threading.Thread(target=self.connectPosManager)
+            visualizationThread = threading.Thread(target=self.visualization)
 
             ################################################################
             #           start Threads 
             ################################################################
             #ev3_conn.start()
             update_cord.start()
+            visualizationThread.start()
             while self.IS_CONNECTED == False:
                 time.sleep(100)
             driveController.start()

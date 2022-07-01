@@ -22,7 +22,7 @@ keyboard.on_press_key("s", lambda _:s.sendall(b'BW'))
 keyboard.on_press_key("h", lambda _:s.sendall(b'hold'))
 #keyboard.on_release("s", lambda _:print("stop BWah
 keyboard.on_press_key("a", lambda _:angle())
-keyboard.on_press_key("z", lambda _:s.sendall("angle 180"))
+keyboard.on_press_key("z", lambda _:s.sendall(b"angle 180"))
 #keyboard.on_release("d", lambda _:print("stop R"))
 keyboard.on_press_key("q", lambda _:s.sendall(b'speed 50'))
 keyboard.on_press_key("e", lambda _:s.sendall(b'exit'))
