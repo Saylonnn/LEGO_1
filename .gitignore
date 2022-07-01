@@ -4,3 +4,7 @@ __pycache__/
 .PC/ball.avi
 PC/ball.avi
 .vscode/launch.json
+.ev3-venv/
+.ev3-venv\
+.ev3-venv
+ev3-venv/

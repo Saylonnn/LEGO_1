@@ -10,6 +10,7 @@ import pickle
 
 class ConnectionThread(threading.Thread):
     def __init__(self, conn, addr):
+        threading.Thread.__init__(self)
         self.conn = conn
         self.addr = addr
 
@@ -75,7 +76,7 @@ class ThreadingServer():
         # Bitrate 5000000
 
         # initialize green ball
-        green_1 = cv2.imread('C:\\Users\\User\\PycharmProjects\\Bildverarbeitung\\EV3\\Ball and EV3\\EV3 Ball and EV3\\GreenBall.png', -1)
+        green_1 = cv2.imread('GreenBall.png', -1)
 
         # initialize red ball
         red = cv2.imread('RedBall.png', -1)
