@@ -162,14 +162,14 @@ class PC_Controller:
             ################################################################
             #           def Threads 
             ################################################################
-            #ev3_conn = threading.Thread(target=self.run_socket)
+            ev3_conn = threading.Thread(target=self.run_socket)
             driveController = threading.Thread(target=self.driveControl)
             update_cord = threading.Thread(target=self.connectPosManager)
 
             ################################################################
             #           start Threads 
             ################################################################
-            #ev3_conn.start()
+            ev3_conn.start()
             update_cord.start()
             while self.IS_CONNECTED == False:
                 time.sleep(100)
