@@ -76,19 +76,19 @@ class ThreadingServer():
         # Bitrate 5000000
 
         # initialize green ball
-        green_1 = cv2.imread('PatternPics\GreenBall.png', -1)
+        green_1 = cv2.imread('PatternPics/BlackBall.png', -1)
 
         # initialize red ball
-        red = cv2.imread('PatternPics\RedBall.png', -1)
+        red = cv2.imread('PatternPics/RedBall.png', -1)
 
         # initialize yellow ball
-        yellow = cv2.imread('PatternPics\YellowBall.png', -1)
+        yellow = cv2.imread('PatternPics/YellowBall.png', -1)
 
         # initialize blue ball
-        blue = cv2.imread('PatternPics\BlueBall.png', -1)
+        blue = cv2.imread('PatternPics/BlueBall.png', -1)
 
         # initialize black ball
-        black = cv2.imread('PatternPics\BlackBall.png', -1)
+        black = cv2.imread('PatternPics/BlackBall.png', -1)
 
         '''
         if (cap.isOpened()):
@@ -230,6 +230,7 @@ class ThreadingServer():
             #cv2.imshow('frame', frame)
             # green ball tracking
             resGreen = cv2.matchTemplate(frame, green_1, 5)
+
             green_min_val, green_max_val, green_min_loc, green_max_loc = cv2.minMaxLoc(resGreen)
 
             green_top_left = green_max_loc
@@ -330,8 +331,9 @@ class ThreadingServer():
                 except:
                     print("connection closed")
                     self.connections.remove(x)
-            # cv2.imshow("Video", frame)  # Anzeige des Videoframes
-
+            cv2.imshow("Video", frame)  # Anzeige des Videoframes
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
         ueye.is_FreeImageMem(hCam, pcImageMemory, MemID)
         ueye.is_ExitCamera(hCam)
         # cap.release()
