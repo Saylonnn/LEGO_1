@@ -76,19 +76,19 @@ class ThreadingServer():
         # Bitrate 5000000
 
         # initialize green ball
-        green_1 = cv2.imread('GreenBall.png', -1)
+        green_1 = cv2.imread('PatternPics\GreenBall.png', -1)
 
         # initialize red ball
-        red = cv2.imread('RedBall.png', -1)
+        red = cv2.imread('PatternPics\RedBall.png', -1)
 
         # initialize yellow ball
-        yellow = cv2.imread('YellowBall.png', -1)
+        yellow = cv2.imread('PatternPics\YellowBall.png', -1)
 
         # initialize blue ball
-        blue = cv2.imread('BlueBall.png', -1)
+        blue = cv2.imread('PatternPics\BlueBall.png', -1)
 
         # initialize black ball
-        black = cv2.imread('BlackBall.png', -1)
+        black = cv2.imread('PatternPics\BlackBall.png', -1)
 
         '''
         if (cap.isOpened()):
