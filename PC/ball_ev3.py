@@ -79,7 +79,7 @@ class ThreadingServer():
         green_1 = cv2.imread('PatternPics/BlackBall.png', -1)
 
         # initialize red ball
-        red = cv2.imread('PatternPics/RedBall.png', -1)
+        red = cv2.imread('ballRotNeu.png', -1)
 
         # initialize yellow ball
         yellow = cv2.imread('PatternPics/YellowBall.png', -1)
@@ -228,8 +228,31 @@ class ThreadingServer():
             # ...resize the image by a half
             # frame = cv2.resize(frame,(0,0),fx=0.5, fy=0.5)
             #cv2.imshow('frame', frame)
+
+            method = cv2.TM_CCOEFF_NORMED
+
+            #test stackoverflow
+
+            frame = cv2.cvtColor(frame,cv2.COLOR_BGRA2BGR)
+
+            threshold = 0.8
+
+            imageMainRGB = (frame)
+            imageTemplate = 'ballRot.png'
+
+            imageMainR, imageMainG, imageMainB = cv2.split(imageMainRGB)
+            imageTemplateR, imageTemplateG, imageTemplateB = cv2.split(imageTemplate)
+
+            resultB = cv2.matchTemplate(imageMainR, imageTemplateR, cv2.TM_SQDIFF)
+            resultG = cv2.matchTemplate(imageMainG, imageTemplateG, cv2.TM_SQDIFF)
+            resultR = cv2.matchTemplate(imageMainR, imageTemplateR, cv2.TM_SQDIFF)
+
+            result = resultB + resultG + resultR
+            loc = np.where(result >= 3 * threshold)
+            print("loc: ", loc)
+
             # green ball tracking
-            resGreen = cv2.matchTemplate(frame, green_1, 5)
+            resGreen = cv2.matchTemplate(frame, green_1, method)
 
             green_min_val, green_max_val, green_min_loc, green_max_loc = cv2.minMaxLoc(resGreen)
 
@@ -244,7 +267,7 @@ class ThreadingServer():
 
             # red ball tracking
 
-            resRed = cv2.matchTemplate(frame, red, 5)
+            resRed = cv2.matchTemplate(frame, red, method)
             red_min_val, red_max_val, red_min_loc, red_max_loc = cv2.minMaxLoc(resRed)
 
             red_top_left = red_max_loc
@@ -268,7 +291,7 @@ class ThreadingServer():
 
             # yellow ball tracking
 
-            resYellow = cv2.matchTemplate(frame, yellow, 5)
+            resYellow = cv2.matchTemplate(frame, yellow, method)
             yellow_min_val, yellow_max_val, yellow_min_loc, yellow_max_loc = cv2.minMaxLoc(resYellow)
 
             yellow_top_left = yellow_max_loc
@@ -282,7 +305,7 @@ class ThreadingServer():
 
             # black ball tracking
 
-            resBlack = cv2.matchTemplate(frame, black, 5)
+            resBlack = cv2.matchTemplate(frame, black, method)
             black_min_val, black_max_val, black_min_loc, black_max_loc = cv2.minMaxLoc(resBlack)
 
             black_top_left = black_max_loc
@@ -296,7 +319,7 @@ class ThreadingServer():
 
             # blue ball tracking
 
-            resBlue = cv2.matchTemplate(frame, blue, 5)
+            resBlue = cv2.matchTemplate(frame, blue, method)
             blue_min_val, blue_max_val, blue_min_loc, blue_max_loc = cv2.minMaxLoc(resBlue)
 
             blue_top_left = blue_max_loc
@@ -307,12 +330,13 @@ class ThreadingServer():
             print("Blue Ball: ", blue_top_left_final)
 
             cv2.rectangle(frame, blue_top_left_final, blue_bottom_right, 255, 2)
+            
             cv2.rectangle(frame, (56, 105), (908, 638), 255, 2)
 
             #cords = [red_top_left_final[0], red_top_left_final[1], black_top_left_final[0], black_top_left_final[1], blue_top_left_final[0], blue_top_left_final[1], yellow_top_left_final[0], yellow_top_left_final[1],
             #       green_top_left_final[0], green_top_left_final[1], 57, 286, 57, 461, 947, 283, 947, 458, True]
             cords_1 = [str(red_top_left_final[0]),",", str(red_top_left_final[1]),",", str(black_top_left_final[0]),",", str(black_top_left_final[1]),",", str(blue_top_left_final[0]),",", str(blue_top_left_final[1]),",", str(yellow_top_left_final[0]),",", str(yellow_top_left_final[1]),",",
-                               str(green_top_left_final[0]),",", str(green_top_left_final[1]), ",",str(57),",", str(286),",", str(57),",", str(461), ",",str(947), ",",str(283),",", str(947),",",str(458),",", str(True)]
+                               str(green_top_left_final[0]),",", str(green_top_left_final[1]), ",",str(57),",", str(286),",", str(57),",", str(461), ",",str(947), ",",str(283),",", str(947),",",str(458),",",str(56),",", str(105),",", str(56),",", str(638),",", str(908),",", str(105),",", str(908),",", str(638),",", str(True)]
 
             s = ''.join(cords_1)
             print(s)
