@@ -1,24 +1,11 @@
-linkes Tor:   oben:   55,286
-linkes Tor:   unten:  55, 463
-linkes Tor:   mitte:  55, 375
+linkes Tor:   oben:   28, 142
+linkes Tor:   unten:  28, 231
 
-linkes Tor:   Bereich:  17, 286 - 57, 461
-
-rechtes Tor:  oben:   906, 285
-rechtes Tor:  unten:  906, 455
-rechtes Tor:  mitte:  906, 369
-
-rechtes Tor: Bereich: 907, 283 - 947, 458
-
-Ecke links oben:    66, 118
-Ecke links unten:   74, 627
-Ecke rechts oben:   893, 120
-Ecke rechts unten:  893, 618
+rechtes Tor:  oben:   452, 141
+rechtes Tor:  unten:  452, 229
 
 Spielfeld als gerades Rechteck (ohne Wölbung der Kamera einzuberechnen):
-Ecke links oben: 56, 105
-Ecke links unten: 56, 638
-Ecke rechts oben: 908, 105
-Ecke rechts unten: 908, 638
-
-
+Ecke links oben: 28, 52
+Ecke links unten: 28, 320
+Ecke rechts oben: 452, 52
+Ecke rechts unten: 452, 320
